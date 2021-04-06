@@ -83,6 +83,7 @@ void update_board(void)
 		return;
 	}
 
+    // test code
 	s_board[to_y][to_x] = s_board[from_y][from_x];
 	s_board[from_y][from_x] = 0;
 

@@ -15,14 +15,14 @@ void input(void)
 {
 	printf("from coordinates\n> ");
 	if (input_coord(g_from_coord) == FALSE) {
-		fprintf(stderr, "can't read data");
-		return;
+		fprintf(stderr, "failed read data");
+		input();
 	}
 
 	printf("to coordinates\n> ");
 	if (input_coord(g_to_coord) == FALSE) {
-		fprintf(stderr, "can't read data");
-		return;
+		fprintf(stderr, "failed read data");
+		input();
 	}
 }
 
