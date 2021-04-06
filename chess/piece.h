@@ -7,12 +7,12 @@
 typedef unsigned char piece_t;
 
 typedef enum shape {
-	SHAPE_PAWN		= (1 << 1),
-	SHAPE_KNIGHT	= (1 << 2),
-	SHAPE_BISHOP	= (1 << 3),
-	SHAPE_ROOK		= (1 << 4),
-	SHAPE_QUEEN		= (SHAPE_ROOK | SHAPE_BISHOP),
-	SHAPE_KING		= (1 << 5)
+	SHAPE_PAWN      = (1 << 1),
+	SHAPE_KNIGHT    = (1 << 2),
+	SHAPE_BISHOP    = (1 << 3),
+	SHAPE_ROOK      = (1 << 4),
+	SHAPE_QUEEN     = (SHAPE_ROOK | SHAPE_BISHOP),
+	SHAPE_KING      = (1 << 5)
 } shape_t;
 
 typedef enum color {
