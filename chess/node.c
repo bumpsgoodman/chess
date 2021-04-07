@@ -21,9 +21,9 @@ void insert_front(node_t** phead, const size_t x, const size_t y)
     *phead = new_node;
 }
 
-void print_node(const node_t* head)
+void print_node(const node_t* head_or_null)
 {
-    const node_t* p = head;
+    const node_t* p = head_or_null;
     char coord[COORD_LENGTH];
     while (p != NULL) {
         translate_to_coord(p->x, p->y, coord);

@@ -8,7 +8,7 @@ typedef struct node {
 } node_t;
 
 void insert_front(node_t** phead, const size_t x, const size_t y);
-void print_node(const node_t* head);
-void destroy_node(node_t* head);
+void print_node(const node_t* head_or_null);
+void destroy_node(node_t* head_or_null);
 
 #endif /* NODE_H */
