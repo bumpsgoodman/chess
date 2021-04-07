@@ -78,7 +78,7 @@ static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH]
     piece_t piece = board[y][x];
     assert(get_shape(piece) == SHAPE_KING);
 
-    // TODO: calculate moveable positions
+    /* TODO: calculate moveable positions */
 
     return NULL;
 }
