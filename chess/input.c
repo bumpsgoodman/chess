@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "input.h"
 #include "validations.h"
@@ -16,13 +17,13 @@ void input(void)
 	printf("from coordinates\n> ");
 	if (input_coord(g_from_coord) == FALSE) {
 		fprintf(stderr, "failed read data");
-		input();
+        assert(FALSE && "failed read date");
 	}
 
 	printf("to coordinates\n> ");
 	if (input_coord(g_to_coord) == FALSE) {
 		fprintf(stderr, "failed read data");
-		input();
+        assert(FALSE && "failed read date");
 	}
 }
 

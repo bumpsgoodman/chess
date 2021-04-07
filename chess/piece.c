@@ -200,7 +200,7 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
 	size_t y = translate_to_board_y(coord);
 
 	piece_t piece = board[y][x];
-	assert(get_shape(piece) == SHAPE_BISHOP);
+	assert((get_shape(piece) & SHAPE_BISHOP) == SHAPE_BISHOP);
 
 	color_t color = get_color(piece);
 
@@ -211,7 +211,7 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
 	size_t dy = y - 1;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -233,7 +233,7 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
 	dy = y + 1;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -255,7 +255,7 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
 	dy = y - 1;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -277,7 +277,7 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
 	dy = y + 1;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -308,7 +308,7 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
 	size_t y = translate_to_board_y(coord);
 
 	piece_t piece = board[y][x];
-	assert(get_shape(piece) == SHAPE_ROOK);
+	assert((get_shape(piece) & SHAPE_ROOK) == SHAPE_ROOK);
 
 	color_t color = get_color(piece);
 
@@ -319,7 +319,7 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
 	size_t dy = y - 1;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -340,7 +340,7 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
 	dy = y + 1;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -361,7 +361,7 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
 	dy = y;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -382,7 +382,7 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
 	dy = y;
 	while (is_valid_xy(dx, dy)) {
 		piece_t other_piece = board[dy][dx];
-		color_t other_color = get_color(piece);
+		color_t other_color = get_color(other_piece);
 
 		if (other_color == 0) {
             insert_front(&head, dx, dy);
@@ -417,13 +417,24 @@ static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH
 	node_t* moveable_list_bishop = get_moveable_list_or_null_bishop(board, coord);
 
     /* merge lists */
-    node_t* p = moveable_list_rook;
-    while (p->next != NULL) {
-        p = p->next;
+    if (moveable_list_rook == NULL && moveable_list_bishop == NULL) {
+        return NULL;
     }
-    p->next = moveable_list_bishop;
+    else if (moveable_list_rook == NULL && moveable_list_bishop != NULL) {
+        return moveable_list_bishop;
+    }
+    else if (moveable_list_rook != NULL && moveable_list_bishop == NULL) {
+        return moveable_list_rook;
+    }
+    else {
+        node_t* p = moveable_list_rook;
+        while (p->next != NULL) {
+            p = p->next;
+        }
+        p->next = moveable_list_bishop;
 
-	return moveable_list_rook;
+        return moveable_list_rook;
+    }
 }
 
 static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH], const char* coord)

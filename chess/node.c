@@ -23,8 +23,6 @@ void insert_front(node_t** phead, const size_t x, const size_t y)
 
 void print_node(const node_t* head)
 {
-    assert(head != NULL);
-
     const node_t* p = head;
     char coord[COORD_LENGTH];
     while (p != NULL) {
