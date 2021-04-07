@@ -9,6 +9,8 @@
 static piece_t s_board[BOARD_HEIGHT][BOARD_WIDTH];
 static color_t s_cur_turn;
 
+static void update_board_mock(void);
+
 void init_board(void)
 {
 	const size_t WHITE_KING_Y = 7;
@@ -72,22 +74,7 @@ void init_board(void)
 
 void update_board(void)
 {
-	size_t from_x = translate_board_x(g_from_coord);
-	size_t from_y = translate_board_y(g_from_coord);
-	size_t to_x = translate_board_x(g_to_coord);
-	size_t to_y = translate_board_y(g_to_coord);
-
-	piece_t selected_piece = s_board[from_y][from_x];
-	if (get_color(selected_piece) != s_cur_turn) {
-		printf("not my turn\n");
-		return;
-	}
-
-    // test code
-	s_board[to_y][to_x] = s_board[from_y][from_x];
-	s_board[from_y][from_x] = 0;
-
-	s_cur_turn = (s_cur_turn == COLOR_WHITE) ? COLOR_BLACK : COLOR_WHITE;
+    update_board_mock();
 }
 
 void draw_board(void)
@@ -149,7 +136,7 @@ void draw_board(void)
 	printf(" %s\n", VERTICAL_BOUNDARY);
 }
 
-size_t translate_board_x(const char* coord)
+size_t translate_to_board_x(const char* coord)
 {
 	assert(coord != NULL);
 	assert(is_valid_coord(coord));
@@ -157,7 +144,7 @@ size_t translate_board_x(const char* coord)
 	return coord[0] - 'a';
 }
 
-size_t translate_board_y(const char* coord)
+size_t translate_to_board_y(const char* coord)
 {
 	assert(coord != NULL);
 	assert(is_valid_coord(coord));
@@ -165,13 +152,58 @@ size_t translate_board_y(const char* coord)
 	return 7 - (coord[1] - '1');
 }
 
-void translate_coord(const size_t x, const size_t y, char* out_coord)
+void translate_to_coord(const size_t x, const size_t y, char* out_coord)
 {
 	assert(is_valid_x(x));
 	assert(is_valid_y(y));
 
 	out_coord[0] = (char)x + 'a';
-	out_coord[1] = (char)y + '1' + 7;
+    out_coord[1] = '8' - (char)y;
 	out_coord[2] = '\0';
 	assert(is_valid_coord(out_coord));
+}
+
+static void update_board_mock(void)
+{
+    size_t from_x = translate_to_board_x(g_from_coord);
+    size_t from_y = translate_to_board_y(g_from_coord);
+    size_t to_x = translate_to_board_x(g_to_coord);
+    size_t to_y = translate_to_board_y(g_to_coord);
+
+    node_t* moveable_list = NULL;
+    piece_t selected_piece = s_board[from_y][from_x];
+
+    if (selected_piece == 0) {
+        printf("please, select piece\n\n");
+        goto exit;
+    }
+
+    if (get_color(selected_piece) != s_cur_turn) {
+        printf("not your turn\n\n");
+        goto exit;
+    }
+
+    moveable_list = get_moveable_list_or_null(s_board, g_from_coord);
+    print_node(moveable_list);
+
+    node_t* p = moveable_list;
+    while (p != NULL) {
+        if (p->x == to_x && p->y == to_y) {
+            s_board[to_y][to_x] = s_board[from_y][from_x];
+            s_board[from_y][from_x] = 0;
+            break;
+        }
+
+        p = p->next;
+    }
+
+    if (p == NULL) {
+        printf("can't move to this coordinates\n\n");
+        goto exit;
+    }
+
+    s_cur_turn = (s_cur_turn == COLOR_WHITE) ? COLOR_BLACK : COLOR_WHITE;
+
+exit:
+    destroy_node(moveable_list);
 }

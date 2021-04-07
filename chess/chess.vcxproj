@@ -143,6 +143,7 @@
     <ClCompile Include="board.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="input.c" />
+    <ClCompile Include="node.c" />
     <ClCompile Include="piece.c" />
     <ClCompile Include="validations.c" />
   </ItemGroup>

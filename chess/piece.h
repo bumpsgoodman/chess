@@ -1,7 +1,7 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include "board.h"
+#include "common_defines.h"
 #include "node.h"
 
 typedef unsigned char piece_t;
@@ -24,6 +24,6 @@ color_t get_color(const piece_t piece);
 shape_t get_shape(const piece_t piece);
 int is_moved(const piece_t piece);
 
-node_t* get_moveable_list_or_null(const piece_t** board, const char* coord);
+node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char* coord);
 
 #endif /* PIECE_H */
