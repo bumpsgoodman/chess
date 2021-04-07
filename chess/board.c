@@ -173,6 +173,8 @@ static void update_board_mock(void)
     node_t* moveable_list = NULL;
     piece_t selected_piece = s_board[from_y][from_x];
 
+    printf("\n");
+
     if (selected_piece == 0) {
         printf("please, select piece\n\n");
         goto exit;
@@ -184,8 +186,6 @@ static void update_board_mock(void)
     }
 
     moveable_list = get_moveable_list_or_null(s_board, g_from_coord);
-    print_node(moveable_list);
-
     node_t* p = moveable_list;
     while (p != NULL) {
         if (p->x == to_x && p->y == to_y) {
@@ -198,7 +198,10 @@ static void update_board_mock(void)
     }
 
     if (p == NULL) {
-        printf("can't move to this coordinates\n\n");
+        printf("you can't move there\n");
+        printf("moveable list: ");
+        print_node(moveable_list);
+        printf("\n");
         goto exit;
     }
 
