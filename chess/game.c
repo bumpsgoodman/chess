@@ -6,29 +6,29 @@
 
 int main(void)
 {
-	init_game();
-	
-	draw_game();
-	while (TRUE) {
-		input();
-		update_game();
-		draw_game();
-	}
+    init_game();
 
-	return 0;
+    draw_game();
+    while (TRUE) {
+        input();
+        update_game();
+        draw_game();
+    }
+
+    return 0;
 }
 
 void init_game(void)
 {
-	init_board();
+    init_board();
 }
 
 void update_game(void)
 {
-	update_board();
+    update_board();
 }
 
 void draw_game(void)
 {
-	draw_board();
+    draw_board();
 }

@@ -14,34 +14,34 @@ static int input_coord(char* coord);
 
 void input(void)
 {
-	printf("from coordinates\n> ");
-	if (input_coord(g_from_coord) == FALSE) {
-		fprintf(stderr, "failed read data");
+    printf("from coordinates\n> ");
+    if (input_coord(g_from_coord) == FALSE) {
+        fprintf(stderr, "failed read data");
         assert(FALSE && "failed read date");
-	}
+    }
 
-	printf("to coordinates\n> ");
-	if (input_coord(g_to_coord) == FALSE) {
-		fprintf(stderr, "failed read data");
+    printf("to coordinates\n> ");
+    if (input_coord(g_to_coord) == FALSE) {
+        fprintf(stderr, "failed read data");
         assert(FALSE && "failed read date");
-	}
+    }
 }
 
 static int input_coord(char* coord)
 {
-	assert(coord != NULL);
+    assert(coord != NULL);
 
-	char line[COORD_LENGTH];
-	while (TRUE) {
-		if (fgets(line, COORD_LENGTH, stdin) == NULL) {
-			clearerr(stdin);
-			return FALSE;
-		}
+    char line[COORD_LENGTH];
+    while (TRUE) {
+        if (fgets(line, COORD_LENGTH, stdin) == NULL) {
+            clearerr(stdin);
+            return FALSE;
+        }
 
-		if (sscanf(line, "%s", coord) == 1) {
-			if (is_valid_coord(coord)) {
-				return TRUE;
-			}
-		}
-	}
+        if (sscanf(line, "%s", coord) == 1) {
+            if (is_valid_coord(coord)) {
+                return TRUE;
+            }
+        }
+    }
 }
