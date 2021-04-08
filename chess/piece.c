@@ -1,4 +1,6 @@
 #include <assert.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "piece.h"
 #include "board.h"
@@ -11,6 +13,8 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
 static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDTH], const char* coord);
 static node_t* get_moveable_list_or_null_knight(const piece_t board[][BOARD_WIDTH], const char* coord);
 static node_t* get_moveable_list_or_null_pawn(const piece_t board[][BOARD_WIDTH], const char* coord);
+
+static int is_king_moveable(const piece_t board[][BOARD_WIDTH], const color_t my_color);
 
 color_t get_color(const piece_t piece)
 {
@@ -76,11 +80,147 @@ static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH]
     size_t y = translate_to_board_y(coord);
 
     piece_t piece = board[y][x];
-    assert(get_shape(piece) == SHAPE_KING);
+    shape_t shape = get_shape(piece);
+    color_t color = get_color(piece);
 
-    /* TODO: calculate moveable positions */
+    assert(shape == SHAPE_KING);
 
-    return NULL;
+    int direction = (color == COLOR_WHITE) ? 1 : -1;
+
+    node_t* head = NULL;
+
+    piece_t copied_board[BOARD_HEIGHT][BOARD_WIDTH];
+    memcpy(copied_board, board, BOARD_WIDTH * BOARD_HEIGHT * sizeof(piece_t));
+
+    /* top-left */
+    size_t dx = x - 1;
+    size_t dy = y - 1;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* forward */
+    dx = x;
+    dy = y - 1;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* top-right */
+    dx = x + 1;
+    dy = y - 1;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* left */
+    dx = x - 1;
+    dy = y;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* right */
+    dx = x + 1;
+    dy = y;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* bottom-left */
+    dx = x - 1;
+    dy = y + 1;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* backward */
+    dx = x;
+    dy = y + 1;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    /* bottom-right */
+    dx = x + 1;
+    dy = y + 1;
+    if (is_valid_xy(dx, dy)) {
+        piece_t origin_piece = copied_board[dy][dx];
+        if (get_color(origin_piece) != color) {
+            copied_board[dy][dx] = piece;
+            copied_board[y][x] = 0;
+            if (!is_king_moveable(copied_board, color)) {
+                insert_front(&head, dx, dy);
+            }
+            copied_board[dy][dx] = origin_piece;
+            copied_board[y][x] = piece;
+        }
+    }
+
+    return head;
 }
 
 static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH], const char* coord)
@@ -452,4 +592,55 @@ static node_t* get_moveable_list_or_null_pawn(const piece_t board[][BOARD_WIDTH]
     }
 
     return head;
+}
+
+static int is_king_moveable(const piece_t board[][BOARD_WIDTH], const color_t my_color)
+{
+    char coord[COORD_LENGTH];
+    node_t* moveable_list = NULL;
+
+    for (size_t y = 0; y < BOARD_HEIGHT; ++y) {
+        for (size_t x = 0; x < BOARD_WIDTH; ++x) {
+            piece_t piece = board[y][x];
+            shape_t shape = get_shape(piece);
+            color_t color = get_color(piece);
+
+            if (color != my_color) {
+                if (shape == SHAPE_KING) {
+                    if (is_valid_xy(x - 1, y - 1) && get_shape(board[y - 1][x - 1]) == SHAPE_KING
+                            || is_valid_xy(x, y - 1) && get_shape(board[y - 1][x]) == SHAPE_KING
+                            || is_valid_xy(x + 1, y - 1) && get_shape(board[y - 1][x + 1]) == SHAPE_KING
+                            || is_valid_xy(x - 1, y) && get_shape(board[y][x - 1]) == SHAPE_KING
+                            || is_valid_xy(x + 1, y) && get_shape(board[y][x + 1]) == SHAPE_KING
+                            || is_valid_xy(x - 1, y + 1) && get_shape(board[y + 1][x - 1]) == SHAPE_KING
+                            || is_valid_xy(x, y + 1) && get_shape(board[y + 1][x]) == SHAPE_KING
+                            || is_valid_xy(x + 1, y + 1) && get_shape(board[y + 1][x + 1]) == SHAPE_KING) {
+                        return TRUE;
+                    }
+
+                    continue;
+                }
+
+                translate_to_coord(x, y, coord);
+                node_t* moveable_list = get_moveable_list_or_null(board, coord);
+                node_t* p = moveable_list;
+                
+                while (p != NULL) {
+                    piece_t target = board[p->y][p->x];
+                    shape_t target_shape = get_shape(target);
+                    color_t target_color = get_color(target);
+                    if (target_shape == SHAPE_KING && target_color == my_color) {
+                        destroy_node(p);
+                        return TRUE;
+                    }
+
+                    p = p->next;
+                }
+
+                destroy_node(p);
+            }
+        }
+    }
+
+    return FALSE;
 }

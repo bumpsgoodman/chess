@@ -199,7 +199,7 @@ static void update_board_mock(void)
 
     if (p == NULL) {
         printf("you can't move there\n");
-        printf("moveable list: ");
+        printf("moveable coordinates: ");
         print_node(moveable_list);
         printf("\n");
         goto exit;
