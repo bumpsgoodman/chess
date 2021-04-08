@@ -197,11 +197,12 @@ static void update_board_mock(void)
         p = p->next;
     }
 
+    printf("moveable coordinates: ");
+    print_node(moveable_list);
+    printf("\n");
+
     if (p == NULL) {
         printf("you can't move there\n");
-        printf("moveable coordinates: ");
-        print_node(moveable_list);
-        printf("\n");
         goto exit;
     }
 
