@@ -246,59 +246,59 @@ static node_t* get_moveable_list_or_null_knight(const piece_t board[][BOARD_WIDT
     node_t* head = NULL;
 
     /* left-forward1 */
-    size_t dx = x - 2;
-    size_t dy = y - 1;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    size_t next_x = x - 2;
+    size_t next_y = y - 1;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* left-forward2 */
-    dx = x - 1;
-    dy = y - 2;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x - 1;
+    next_y = y - 2;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* right-forward1 */
-    dx = x + 2;
-    dy = y - 1;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x + 2;
+    next_y = y - 1;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* right-forward1 */
-    dx = x + 1;
-    dy = y - 2;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x + 1;
+    next_y = y - 2;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* left-backward1 */
-    dx = x - 2;
-    dy = y + 1;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x - 2;
+    next_y = y + 1;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* left-backward2 */
-    dx = x - 1;
-    dy = y + 2;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x - 1;
+    next_y = y + 2;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* right-backward1 */
-    dx = x + 2;
-    dy = y + 1;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x + 2;
+    next_y = y + 1;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* right-backward2 */
-    dx = x + 1;
-    dy = y + 2;
-    if (is_valid_xy(dx, dy) && get_color(board[dy][dx]) != color) {
-        insert_front(&head, dx, dy);
+    next_x = x + 1;
+    next_y = y + 2;
+    if (is_valid_xy(next_x, next_y) && get_color(board[next_y][next_x]) != color) {
+        insert_front(&head, next_x, next_y);
     }
 
     return head;
@@ -322,31 +322,31 @@ static node_t* get_moveable_list_or_null_pawn(const piece_t board[][BOARD_WIDTH]
     node_t* head = NULL;
 
     /* forward1 */
-    size_t dx = x;
-    size_t dy = y + direction;
-    if (is_valid_xy(dx, dy) && board[dy][dx] == 0) {
-        insert_front(&head, dx, dy);
+    size_t next_x = x;
+    size_t next_y = y + direction;
+    if (is_valid_xy(next_x, next_y) && board[next_y][next_x] == 0) {
+        insert_front(&head, next_x, next_y);
 
         /* forward2 */
-        size_t dx2 = dx;
-        size_t dy2 = dy + direction;
-        if (is_valid_xy(dx2, dy2) && board[dy2][dx2] == 0) {
-            insert_front(&head, dx2, dy2);
+        size_t next_x2 = next_x;
+        size_t next_y2 = next_y + direction;
+        if (is_valid_xy(next_x2, next_y2) && board[next_y2][next_x2] == 0) {
+            insert_front(&head, next_x2, next_y2);
         }
     }
 
     /* left-forward */
-    dx = x - 1;
-    dy = y + direction;
-    if (is_valid_xy(dx, dy) && board[dy][dx] != 0) {
-        insert_front(&head, dx, dy);
+    next_x = x - 1;
+    next_y = y + direction;
+    if (is_valid_xy(next_x, next_y) && board[next_y][next_x] != 0) {
+        insert_front(&head, next_x, next_y);
     }
 
     /* right-forward */
-    dx = x + 1;
-    dy = y + direction;
-    if (is_valid_xy(dx, dy) && board[dy][dx] != 0) {
-        insert_front(&head, dx, dy);
+    next_x = x + 1;
+    next_y = y + direction;
+    if (is_valid_xy(next_x, next_y) && board[next_y][next_x] != 0) {
+        insert_front(&head, next_x, next_y);
     }
 
     return head;
