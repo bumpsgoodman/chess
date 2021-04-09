@@ -6,10 +6,12 @@
 
 int main(void)
 {
-    init_game();
+    int b_running = TRUE;
 
+    init_game();
     draw_game();
-    while (TRUE) {
+    
+    while (b_running) {
         input();
         update_game();
         draw_game();
