@@ -21,6 +21,25 @@ void insert_front(node_t** phead, const size_t x, const size_t y)
     *phead = new_node;
 }
 
+int delete_node(node_t** phead, node_t* deleted_node)
+{
+    assert(phead != NULL);
+    assert(deleted_node != NULL);
+
+    node_t** pp = phead;
+    while (*pp != NULL) {
+        if (*pp == deleted_node) {
+            *pp = (*pp)->next;
+            free(deleted_node);
+            return TRUE;
+        }
+
+        pp = &(*pp)->next;
+    }
+
+    return FALSE;
+}
+
 void print_node(const node_t* head_or_null)
 {
     const node_t* p = head_or_null;

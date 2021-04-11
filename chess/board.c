@@ -72,51 +72,7 @@ void init_board(void)
 
 void update_board(void)
 {
-    size_t from_x = translate_to_board_x(g_from_coord);
-    size_t from_y = translate_to_board_y(g_from_coord);
-    size_t to_x = translate_to_board_x(g_to_coord);
-    size_t to_y = translate_to_board_y(g_to_coord);
 
-    node_t* moveable_list = NULL;
-    piece_t selected_piece = s_board[from_y][from_x];
-
-    printf("\n");
-
-    if (selected_piece == 0) {
-        printf("please, select piece\n\n");
-        goto exit;
-    }
-
-    if (get_color(selected_piece) != s_cur_turn) {
-        printf("not your turn\n\n");
-        goto exit;
-    }
-
-    moveable_list = get_moveable_list_or_null(s_board, g_from_coord);
-    node_t* p = moveable_list;
-    while (p != NULL) {
-        if (p->x == to_x && p->y == to_y) {
-            s_board[to_y][to_x] = s_board[from_y][from_x];
-            s_board[from_y][from_x] = 0;
-            break;
-        }
-
-        p = p->next;
-    }
-
-    printf("moveable coordinates: ");
-    print_node(moveable_list);
-    printf("\n");
-
-    if (p == NULL) {
-        printf("you can't move there\n");
-        goto exit;
-    }
-
-    s_cur_turn = (s_cur_turn == COLOR_WHITE) ? COLOR_BLACK : COLOR_WHITE;
-
-exit:
-    destroy_node(moveable_list);
 }
 
 void draw_board(void)

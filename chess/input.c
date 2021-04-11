@@ -40,6 +40,7 @@ static int input_coord(char* coord)
 
         if (sscanf(line, "%s", coord) == 1) {
             if (is_valid_coord(coord)) {
+                rewind(stdin);
                 return TRUE;
             }
         }

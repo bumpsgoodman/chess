@@ -10,12 +10,12 @@ int is_valid_coord(const char* coord)
 
 int is_valid_x(const size_t x)
 {
-    return (x >= 0 && x < BOARD_WIDTH);
+    return (x < BOARD_WIDTH);
 }
 
 int is_valid_y(const size_t y)
 {
-    return (y >= 0 && y < BOARD_HEIGHT);
+    return (y < BOARD_HEIGHT);
 }
 
 int is_valid_xy(const size_t x, const size_t y)
