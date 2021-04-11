@@ -15,6 +15,8 @@ int main(void)
         input();
         update_game();
         draw_game();
+
+        b_running = !is_checkmate();
     }
 
     return 0;

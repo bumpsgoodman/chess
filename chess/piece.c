@@ -7,6 +7,7 @@
 #include "node.h"
 #include "validations.h"
 
+static node_t* get_moveable_list_or_null_illegal(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
 static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
 static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
 static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
@@ -40,9 +41,62 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
     assert(coord != NULL);
     assert(is_valid_coord(coord));
 
-    size_t x = translate_to_board_x(coord);
-    size_t y = translate_to_board_y(coord);
+    size_t src_x = translate_to_board_x(coord);
+    size_t src_y = translate_to_board_y(coord);
 
+    piece_t piece = board[src_y][src_x];
+    color_t color = get_color(piece);
+    node_t* moveable_list = get_moveable_list_or_null_illegal(board, src_x, src_y);
+
+    /* remove illegal moves */
+    piece_t copied_board[BOARD_HEIGHT][BOARD_WIDTH];
+    memcpy(copied_board, board, BOARD_WIDTH * BOARD_HEIGHT * sizeof(piece_t));
+
+    node_t* p = moveable_list;
+    while (p != NULL) {
+        piece_t origin_piece = copied_board[p->y][p->x];
+        copied_board[p->y][p->x] = piece;
+        copied_board[src_y][src_x] = 0;
+
+        node_t* deleted_node = NULL;
+
+        for (size_t y = 0; y < BOARD_HEIGHT; ++y) {
+            for (size_t x = 0; x < BOARD_WIDTH; ++x) {
+                if (get_color(copied_board[y][x]) != color) {
+                    node_t* other_moveable_list = get_moveable_list_or_null_illegal(copied_board, x, y);
+                    node_t* q = other_moveable_list;
+                    while (q != NULL) {
+                        piece_t other_piece = copied_board[q->y][q->x];
+                        shape_t other_shape = get_shape(other_piece);
+                        color_t other_color = get_color(other_piece);
+
+                        if (other_shape == SHAPE_KING && other_color == color) {
+                            deleted_node = p;
+                            goto deleted;
+                        }
+
+                        q = q->next;
+                    }
+
+                    destroy_list(other_moveable_list);
+                }
+            }
+        }
+
+    deleted:
+        copied_board[src_y][src_x] = piece;
+        copied_board[p->y][p->x] = origin_piece;
+
+        p = p->next;
+
+        delete_node(&moveable_list, deleted_node);
+    }
+
+    return moveable_list;
+}
+
+static node_t* get_moveable_list_or_null_illegal(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)
+{
     piece_t piece = board[y][x];
     color_t color = get_color(piece);
     node_t* moveable_list = NULL;
@@ -76,7 +130,26 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
 
 static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)
 {
-    return NULL;
+    assert(board != NULL);
+    assert(is_valid_xy(x, y));
+
+    piece_t piece = board[y][x];
+    piece_t piece_shape = get_shape(piece);
+    piece_t piece_color = get_color(piece);
+
+    assert(piece_shape == SHAPE_KING);
+
+    node_t* moveable_list = NULL;
+    add_moveable_coord(board, piece_color, x - 1, y - 1, &moveable_list);   /* top-left */
+    add_moveable_coord(board, piece_color, x, y - 1, &moveable_list);       /* forward */
+    add_moveable_coord(board, piece_color, x + 1, y - 1, &moveable_list);   /* top-right */
+    add_moveable_coord(board, piece_color, x - 1, y, &moveable_list);       /* left */
+    add_moveable_coord(board, piece_color, x + 1, y, &moveable_list);       /* right */
+    add_moveable_coord(board, piece_color, x - 1, y + 1, &moveable_list);   /* top-left */
+    add_moveable_coord(board, piece_color, x, y + 1, &moveable_list);       /* back-ward */
+    add_moveable_coord(board, piece_color, x + 1, y + 1, &moveable_list);   /* top_right */
+
+    return moveable_list;
 }
 
 static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)

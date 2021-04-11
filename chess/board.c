@@ -100,6 +100,8 @@ void update_board(void)
     }
 
     destroy_list(moveable_list);
+
+    s_cur_turn = (s_cur_turn == COLOR_WHITE) ? COLOR_BLACK : COLOR_WHITE;
 }
 
 void draw_board(void)
@@ -159,6 +161,25 @@ void draw_board(void)
         printf("%2s\n", HORIZONTAL_BOUNDARY);
     }
     printf(" %s\n", VERTICAL_BOUNDARY);
+}
+
+int is_checkmate(void) {
+    char coord[COORD_LENGTH];
+
+    for (size_t y = 0; y < BOARD_HEIGHT; ++y) {
+        for (size_t x = 0; x < BOARD_WIDTH; ++x) {
+            color_t color = get_color(s_board[y][x]);
+            if (color == s_cur_turn) {
+                translate_to_coord(x, y, coord);
+                node_t* moveable_list = get_moveable_list_or_null(s_board, coord);
+                if (moveable_list != NULL) {
+                    return FALSE;
+                }
+            }
+        }
+    }
+
+    return TRUE;
 }
 
 size_t translate_to_board_x(const char* coord)
