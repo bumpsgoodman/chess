@@ -7,7 +7,7 @@
 #include "node.h"
 #include "validations.h"
 
-static node_t* get_moveable_list_or_null_illegal(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
+static node_t* get_moveable_illegal_list_or_null(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
 static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
 static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
 static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y);
@@ -46,7 +46,7 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
 
     piece_t piece = board[src_y][src_x];
     color_t color = get_color(piece);
-    node_t* moveable_list = get_moveable_list_or_null_illegal(board, src_x, src_y);
+    node_t* moveable_list = get_moveable_illegal_list_or_null(board, src_x, src_y);
 
     // remove illegal moves
     piece_t copied_board[BOARD_HEIGHT][BOARD_WIDTH];
@@ -63,7 +63,7 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
         for (size_t y = 0; y < BOARD_HEIGHT; ++y) {
             for (size_t x = 0; x < BOARD_WIDTH; ++x) {
                 if (get_color(copied_board[y][x]) != color) {
-                    node_t* other_moveable_list = get_moveable_list_or_null_illegal(copied_board, x, y);
+                    node_t* other_moveable_list = get_moveable_illegal_list_or_null(copied_board, x, y);
                     node_t* q = other_moveable_list;
                     while (q != NULL) {
                         piece_t other_piece = copied_board[q->y][q->x];
@@ -95,7 +95,7 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
     return moveable_list;
 }
 
-static node_t* get_moveable_list_or_null_illegal(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)
+static node_t* get_moveable_illegal_list_or_null(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)
 {
     piece_t piece = board[y][x];
     color_t color = get_color(piece);
