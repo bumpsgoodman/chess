@@ -4,6 +4,10 @@
 #include "common_defines.h"
 #include "node.h"
 
+#define COLOR_FLAG (0xc0)
+#define SHAPE_FLAG (0x3e)
+#define MOVE_FLAG (0x1)
+
 typedef unsigned char piece_t;
 
 typedef enum shape {

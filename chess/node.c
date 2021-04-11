@@ -40,7 +40,7 @@ int delete_node(node_t** phead, node_t* deleted_node)
     return FALSE;
 }
 
-void print_node(const node_t* head_or_null)
+void print_list(const node_t* head_or_null)
 {
     const node_t* p = head_or_null;
     char coord[COORD_LENGTH];
@@ -52,7 +52,7 @@ void print_node(const node_t* head_or_null)
     printf("\n");
 }
 
-void destroy_node(node_t* head_or_null)
+void destroy_list(node_t* head_or_null)
 {
     node_t* p = head_or_null;
     while (p != NULL) {

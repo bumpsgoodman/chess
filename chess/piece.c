@@ -16,20 +16,22 @@ static node_t* get_moveable_list_or_null_pawn(const piece_t board[][BOARD_WIDTH]
 
 static void add_moveable_coord(const piece_t board[][BOARD_WIDTH], const color_t team,
     const size_t to_x, const size_t to_y, node_t** plist);
+static void add_moveable_coord_recursion(const piece_t board[][BOARD_WIDTH], const color_t team,
+    const size_t dest_x, const size_t dest_y, const int dx, const int dy, node_t** plist);
 
 color_t get_color(const piece_t piece)
 {
-    return piece & 0xc0;
+    return piece & COLOR_FLAG;
 }
 
 shape_t get_shape(const piece_t piece)
 {
-    return piece & 0x3e;
+    return piece & SHAPE_FLAG;
 }
 
 int is_first_move(const piece_t piece)
 {
-    return !(piece & 0x01);
+    return !(piece & MOVE_FLAG);
 }
 
 node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char* coord)
@@ -74,7 +76,7 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
 
 static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)
 {
-
+    return NULL;
 }
 
 static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH], const size_t x, const size_t y)
@@ -89,8 +91,8 @@ static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH
     assert(piece_shape == SHAPE_QUEEN);
 
     node_t* moveable_list = NULL;
-    node_t* moveable_list_rook = get_moveable_list_or_null_rook;
-    node_t* moveable_list_bishop = get_moveable_list_or_null_bishop;
+    node_t* moveable_list_rook = get_moveable_list_or_null_rook(board, x, y);
+    node_t* moveable_list_bishop = get_moveable_list_or_null_bishop(board, x, y);
 
     /* merge */
     if (moveable_list_rook != NULL && moveable_list_bishop != NULL) {
@@ -121,7 +123,7 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
     piece_t piece_shape = get_shape(piece);
     piece_t piece_color = get_color(piece);
 
-    assert((piece & piece_shape) == SHAPE_ROOK);
+    assert((piece_shape & SHAPE_ROOK) == SHAPE_ROOK);
 
     node_t* moveable_list = NULL;
     add_moveable_coord_recursion(board, piece_color, x, y - 1, 0, -1, &moveable_list); /* forward */
@@ -141,7 +143,7 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
     piece_t piece_shape = get_shape(piece);
     piece_t piece_color = get_color(piece);
 
-    assert((piece & piece_shape) == SHAPE_BISHOP);
+    assert((piece_shape & SHAPE_BISHOP) == SHAPE_BISHOP);
 
     node_t* moveable_list = NULL;
     add_moveable_coord_recursion(board, piece_color, x - 1, y - 1, -1, -1, &moveable_list); /* top-left */
@@ -198,22 +200,24 @@ static node_t* get_moveable_list_or_null_pawn(const piece_t board[][BOARD_WIDTH]
 
     /* forward1 */
     if (is_valid_xy(x, forward_y) && board[forward_y][x] == 0) {
-        insert_front(moveable_list, x, forward_y);
+        insert_front(&moveable_list, x, forward_y);
     }
 
     /* forward2 */
     if (is_valid_xy(x, forward2_y) && is_first_move(piece) && board[forward2_y][x] == 0) {
-        insert_front(moveable_list, x, forward2_y);
+        insert_front(&moveable_list, x, forward2_y);
     }
 
     /* top-left */
-    if (is_valid_xy(top_left_x, forward_y) && board[forward_y][top_left_x] == 0) {
-        insert_front(moveable_list, top_left_x, forward_y);
+    color_t top_left_color = get_color(board[forward_y][top_left_x]);
+    if (is_valid_xy(top_left_x, forward_y) && top_left_color != 0 && top_left_color != piece_color) {
+        insert_front(&moveable_list, top_left_x, forward_y);
     }
 
     /* top-right */
-    if (is_valid_xy(top_right_x, forward_y) && board[forward_y][top_right_x] == 0) {
-        insert_front(moveable_list, top_right_x, forward_y);
+    color_t top_right_color = get_color(board[forward_y][top_right_x]);
+    if (is_valid_xy(top_right_x, forward_y) && top_right_color != 0 && top_right_color != piece_color) {
+        insert_front(&moveable_list, top_right_x, forward_y);
     }
 
     return moveable_list;

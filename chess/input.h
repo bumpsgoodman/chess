@@ -3,8 +3,8 @@
 
 #include "common_defines.h"
 
-extern char g_from_coord[COORD_LENGTH];
-extern char g_to_coord[COORD_LENGTH];
+extern char g_src_coord[COORD_LENGTH];
+extern char g_dest_coord[COORD_LENGTH];
 
 void input(void);
 

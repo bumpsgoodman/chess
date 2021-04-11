@@ -7,21 +7,23 @@
 #include "input.h"
 #include "validations.h"
 
-char g_from_coord[COORD_LENGTH];
-char g_to_coord[COORD_LENGTH];
+#define REDIRECTION_MODE
+
+char g_src_coord[COORD_LENGTH];
+char g_dest_coord[COORD_LENGTH];
 
 static int input_coord(char* coord);
 
 void input(void)
 {
     printf("from coordinates\n> ");
-    if (input_coord(g_from_coord) == FALSE) {
+    if (input_coord(g_src_coord) == FALSE) {
         fprintf(stderr, "failed read data");
         assert(FALSE && "failed read date");
     }
 
     printf("to coordinates\n> ");
-    if (input_coord(g_to_coord) == FALSE) {
+    if (input_coord(g_dest_coord) == FALSE) {
         fprintf(stderr, "failed read data");
         assert(FALSE && "failed read date");
     }
@@ -40,7 +42,9 @@ static int input_coord(char* coord)
 
         if (sscanf(line, "%s", coord) == 1) {
             if (is_valid_coord(coord)) {
+#ifndef REDIRECTION_MODE
                 rewind(stdin);
+#endif /* REDIRECTION_MODE */
                 return TRUE;
             }
         }

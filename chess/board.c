@@ -70,9 +70,36 @@ void init_board(void)
     s_cur_turn = COLOR_WHITE;
 }
 
+static void move(piece_t board[][BOARD_WIDTH], const size_t src_x, const size_t src_y, const size_t dest_x, const size_t dest_y);
+
 void update_board(void)
 {
+    assert(is_valid_coord(g_src_coord));
+    assert(is_valid_coord(g_dest_coord));
 
+    size_t src_x = translate_to_board_x(g_src_coord);
+    size_t src_y = translate_to_board_y(g_src_coord);
+    size_t dest_x = translate_to_board_x(g_dest_coord);
+    size_t dest_y = translate_to_board_y(g_dest_coord);
+
+    node_t* moveable_list = get_moveable_list_or_null(s_board, g_src_coord);
+    print_list(moveable_list);
+
+    node_t* p = moveable_list;
+    while (p != NULL) {
+        if (p->x == dest_x && p->y == dest_y) {
+            move(s_board, src_x, src_y, dest_x, dest_y);
+            break;
+        }
+
+        p = p->next;
+    }
+
+    if (p == NULL) {
+        printf("can't move there\n\n");
+    }
+
+    destroy_list(moveable_list);
 }
 
 void draw_board(void)
@@ -159,4 +186,16 @@ void translate_to_coord(const size_t x, const size_t y, char* out_coord)
     out_coord[1] = '8' - (char)y;
     out_coord[2] = '\0';
     assert(is_valid_coord(out_coord));
+}
+
+static void move(piece_t board[][BOARD_WIDTH], const size_t src_x, const size_t src_y, const size_t dest_x, const size_t dest_y)
+{
+    assert(board != NULL);
+    assert(is_valid_xy(src_x, src_y));
+    assert(is_valid_xy(dest_x, dest_y));
+
+    board[dest_y][dest_x] = board[src_y][src_x];
+    board[src_y][src_x] = 0;
+
+    board[dest_y][dest_x] |= MOVE_FLAG;
 }
