@@ -35,33 +35,33 @@ void init_board(void)
     const size_t LEFT_KNIGHT_X = 1;
     const size_t RIGHT_KNIGHT_X = 6;
 
-    /* king */
+    // king
     s_board[WHITE_KING_Y][KING_X] = SHAPE_KING | COLOR_WHITE;
     s_board[BLACK_KING_Y][KING_X] = SHAPE_KING | COLOR_BLACK;
 
-    /* queen */
+    // queen
     s_board[WHITE_MAJOR_Y][QUEEN_X] = SHAPE_QUEEN | COLOR_WHITE;
     s_board[BLACK_MAJOR_Y][QUEEN_X] = SHAPE_QUEEN | COLOR_BLACK;
 
-    /* rook */
+    // rook
     s_board[WHITE_MAJOR_Y][LEFT_ROOK_X] = SHAPE_ROOK | COLOR_WHITE;
     s_board[WHITE_MAJOR_Y][RIGHT_ROOK_X] = SHAPE_ROOK | COLOR_WHITE;
     s_board[BLACK_MAJOR_Y][LEFT_ROOK_X] = SHAPE_ROOK | COLOR_BLACK;
     s_board[BLACK_MAJOR_Y][RIGHT_ROOK_X] = SHAPE_ROOK | COLOR_BLACK;
 
-    /* bishop */
+    // bishop
     s_board[WHITE_MINOR_Y][LEFT_BISHOP_X] = SHAPE_BISHOP | COLOR_WHITE;
     s_board[WHITE_MINOR_Y][RIGHT_BISHOP_X] = SHAPE_BISHOP | COLOR_WHITE;
     s_board[BLACK_MINOR_Y][LEFT_BISHOP_X] = SHAPE_BISHOP | COLOR_BLACK;
     s_board[BLACK_MINOR_Y][RIGHT_BISHOP_X] = SHAPE_BISHOP | COLOR_BLACK;
 
-    /* knight */
+    // knight
     s_board[WHITE_MINOR_Y][LEFT_KNIGHT_X] = SHAPE_KNIGHT | COLOR_WHITE;
     s_board[WHITE_MINOR_Y][RIGHT_KNIGHT_X] = SHAPE_KNIGHT | COLOR_WHITE;
     s_board[BLACK_MINOR_Y][LEFT_KNIGHT_X] = SHAPE_KNIGHT | COLOR_BLACK;
     s_board[BLACK_MINOR_Y][RIGHT_KNIGHT_X] = SHAPE_KNIGHT | COLOR_BLACK;
 
-    /* pawn */
+    // pawn
     for (size_t i = 0; i < BOARD_WIDTH; ++i) {
         s_board[WHITE_PAWN_Y][i] = SHAPE_PAWN | COLOR_WHITE;
         s_board[BLACK_PAWN_Y][i] = SHAPE_PAWN | COLOR_BLACK;

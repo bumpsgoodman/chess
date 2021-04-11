@@ -48,7 +48,7 @@ node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char
     color_t color = get_color(piece);
     node_t* moveable_list = get_moveable_list_or_null_illegal(board, src_x, src_y);
 
-    /* remove illegal moves */
+    // remove illegal moves
     piece_t copied_board[BOARD_HEIGHT][BOARD_WIDTH];
     memcpy(copied_board, board, BOARD_WIDTH * BOARD_HEIGHT * sizeof(piece_t));
 
@@ -140,14 +140,14 @@ static node_t* get_moveable_list_or_null_king(const piece_t board[][BOARD_WIDTH]
     assert(piece_shape == SHAPE_KING);
 
     node_t* moveable_list = NULL;
-    add_moveable_coord(board, piece_color, x - 1, y - 1, &moveable_list);   /* top-left */
-    add_moveable_coord(board, piece_color, x, y - 1, &moveable_list);       /* forward */
-    add_moveable_coord(board, piece_color, x + 1, y - 1, &moveable_list);   /* top-right */
-    add_moveable_coord(board, piece_color, x - 1, y, &moveable_list);       /* left */
-    add_moveable_coord(board, piece_color, x + 1, y, &moveable_list);       /* right */
-    add_moveable_coord(board, piece_color, x - 1, y + 1, &moveable_list);   /* top-left */
-    add_moveable_coord(board, piece_color, x, y + 1, &moveable_list);       /* back-ward */
-    add_moveable_coord(board, piece_color, x + 1, y + 1, &moveable_list);   /* top_right */
+    add_moveable_coord(board, piece_color, x - 1, y - 1, &moveable_list);   // top-left 
+    add_moveable_coord(board, piece_color, x, y - 1, &moveable_list);       // forward 
+    add_moveable_coord(board, piece_color, x + 1, y - 1, &moveable_list);   // top-right 
+    add_moveable_coord(board, piece_color, x - 1, y, &moveable_list);       // left 
+    add_moveable_coord(board, piece_color, x + 1, y, &moveable_list);       // right 
+    add_moveable_coord(board, piece_color, x - 1, y + 1, &moveable_list);   // top-left 
+    add_moveable_coord(board, piece_color, x, y + 1, &moveable_list);       // back-ward 
+    add_moveable_coord(board, piece_color, x + 1, y + 1, &moveable_list);   // top_right 
 
     return moveable_list;
 }
@@ -167,7 +167,7 @@ static node_t* get_moveable_list_or_null_queen(const piece_t board[][BOARD_WIDTH
     node_t* moveable_list_rook = get_moveable_list_or_null_rook(board, x, y);
     node_t* moveable_list_bishop = get_moveable_list_or_null_bishop(board, x, y);
 
-    /* merge */
+    // merge
     if (moveable_list_rook != NULL && moveable_list_bishop != NULL) {
         node_t* p = moveable_list_rook;
         while (p->next != NULL) {
@@ -199,10 +199,10 @@ static node_t* get_moveable_list_or_null_rook(const piece_t board[][BOARD_WIDTH]
     assert((piece_shape & SHAPE_ROOK) == SHAPE_ROOK);
 
     node_t* moveable_list = NULL;
-    add_moveable_coord_recursion(board, piece_color, x, y - 1, 0, -1, &moveable_list); /* forward */
-    add_moveable_coord_recursion(board, piece_color, x, y + 1, 0, 1, &moveable_list); /* backward */
-    add_moveable_coord_recursion(board, piece_color, x - 1, y, -1, 0, &moveable_list); /* left */
-    add_moveable_coord_recursion(board, piece_color, x + 1, y, 1, 0, &moveable_list); /* right */
+    add_moveable_coord_recursion(board, piece_color, x, y - 1, 0, -1, &moveable_list); // forward
+    add_moveable_coord_recursion(board, piece_color, x, y + 1, 0, 1, &moveable_list); // backward
+    add_moveable_coord_recursion(board, piece_color, x - 1, y, -1, 0, &moveable_list); // left
+    add_moveable_coord_recursion(board, piece_color, x + 1, y, 1, 0, &moveable_list); // right
 
     return moveable_list;
 }
@@ -219,10 +219,10 @@ static node_t* get_moveable_list_or_null_bishop(const piece_t board[][BOARD_WIDT
     assert((piece_shape & SHAPE_BISHOP) == SHAPE_BISHOP);
 
     node_t* moveable_list = NULL;
-    add_moveable_coord_recursion(board, piece_color, x - 1, y - 1, -1, -1, &moveable_list); /* top-left */
-    add_moveable_coord_recursion(board, piece_color, x + 1, y + 1, 1, 1, &moveable_list); /* bottom-right */
-    add_moveable_coord_recursion(board, piece_color, x + 1, y - 1, 1, -1, &moveable_list); /* top-right */
-    add_moveable_coord_recursion(board, piece_color, x - 1, y + 1, -1, 1, &moveable_list); /* bottom-left */
+    add_moveable_coord_recursion(board, piece_color, x - 1, y - 1, -1, -1, &moveable_list); // top-left 
+    add_moveable_coord_recursion(board, piece_color, x + 1, y + 1, 1, 1, &moveable_list); // bottom-right 
+    add_moveable_coord_recursion(board, piece_color, x + 1, y - 1, 1, -1, &moveable_list); // top-right 
+    add_moveable_coord_recursion(board, piece_color, x - 1, y + 1, -1, 1, &moveable_list); // bottom-left 
 
     return moveable_list;
 }
@@ -239,14 +239,14 @@ static node_t* get_moveable_list_or_null_knight(const piece_t board[][BOARD_WIDT
     assert(piece_shape == SHAPE_KNIGHT);
 
     node_t* moveable_list = NULL;
-    add_moveable_coord(board, piece_color, x - 2, y - 1, &moveable_list); /* top-left1 */
-    add_moveable_coord(board, piece_color, x - 1, y - 2, &moveable_list); /* top-left2 */
-    add_moveable_coord(board, piece_color, x + 2, y - 1, &moveable_list); /* top-right1 */
-    add_moveable_coord(board, piece_color, x + 1, y - 2, &moveable_list); /* top-right2 */
-    add_moveable_coord(board, piece_color, x - 2, y + 1, &moveable_list); /* bottom-left1 */
-    add_moveable_coord(board, piece_color, x - 1, y + 2, &moveable_list); /* bottom-left2 */
-    add_moveable_coord(board, piece_color, x + 2, y + 1, &moveable_list); /* bottom-right1 */
-    add_moveable_coord(board, piece_color, x + 1, y + 2, &moveable_list); /* bottom-right2 */
+    add_moveable_coord(board, piece_color, x - 2, y - 1, &moveable_list); // top-left1 
+    add_moveable_coord(board, piece_color, x - 1, y - 2, &moveable_list); // top-left2 
+    add_moveable_coord(board, piece_color, x + 2, y - 1, &moveable_list); // top-right1 
+    add_moveable_coord(board, piece_color, x + 1, y - 2, &moveable_list); // top-right2 
+    add_moveable_coord(board, piece_color, x - 2, y + 1, &moveable_list); // bottom-left1 
+    add_moveable_coord(board, piece_color, x - 1, y + 2, &moveable_list); // bottom-left2 
+    add_moveable_coord(board, piece_color, x + 2, y + 1, &moveable_list); // bottom-right1 
+    add_moveable_coord(board, piece_color, x + 1, y + 2, &moveable_list); // bottom-right2 
 
     return moveable_list;
 }
@@ -271,23 +271,23 @@ static node_t* get_moveable_list_or_null_pawn(const piece_t board[][BOARD_WIDTH]
 
     node_t* moveable_list = NULL;
 
-    /* forward1 */
+    // forward1 
     if (is_valid_xy(x, forward_y) && board[forward_y][x] == 0) {
         insert_front(&moveable_list, x, forward_y);
     }
 
-    /* forward2 */
+    // forward2 
     if (is_valid_xy(x, forward2_y) && is_first_move(piece) && board[forward2_y][x] == 0) {
         insert_front(&moveable_list, x, forward2_y);
     }
 
-    /* top-left */
+    // top-left 
     color_t top_left_color = get_color(board[forward_y][top_left_x]);
     if (is_valid_xy(top_left_x, forward_y) && top_left_color != 0 && top_left_color != piece_color) {
         insert_front(&moveable_list, top_left_x, forward_y);
     }
 
-    /* top-right */
+    // top-right 
     color_t top_right_color = get_color(board[forward_y][top_right_x]);
     if (is_valid_xy(top_right_x, forward_y) && top_right_color != 0 && top_right_color != piece_color) {
         insert_front(&moveable_list, top_right_x, forward_y);

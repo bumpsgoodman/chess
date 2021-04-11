@@ -30,4 +30,4 @@ int is_first_move(const piece_t piece);
 
 node_t* get_moveable_list_or_null(const piece_t board[][BOARD_WIDTH], const char* coord);
 
-#endif /* PIECE_H */
+#endif // PIECE_H

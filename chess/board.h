@@ -14,4 +14,4 @@ size_t translate_to_board_x(const char* coord);
 size_t translate_to_board_y(const char* coord);
 void translate_to_coord(const size_t x, const size_t y, char* out_coord);
 
-#endif /* BOARD_H */
+#endif // BOARD_H

@@ -9,4 +9,4 @@
 #define BOARD_WIDTH (8)
 #define BOARD_HEIGHT (8)
 
-#endif /* COMMON_DEFINES_H */
+#endif // COMMON_DEFINES_H

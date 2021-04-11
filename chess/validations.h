@@ -8,4 +8,4 @@ int is_valid_x(const size_t x);
 int is_valid_y(const size_t y);
 int is_valid_xy(const size_t x, const size_t y);
 
-#endif /* VALIDATIONS_H */
+#endif // VALIDATIONS_H

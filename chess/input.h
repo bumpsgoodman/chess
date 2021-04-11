@@ -8,4 +8,4 @@ extern char g_dest_coord[COORD_LENGTH];
 
 void input(void);
 
-#endif /* INPUT_H */
+#endif // INPUT_H

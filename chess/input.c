@@ -44,7 +44,7 @@ static int input_coord(char* coord)
             if (is_valid_coord(coord)) {
 #ifndef REDIRECTION_MODE
                 rewind(stdin);
-#endif /* REDIRECTION_MODE */
+#endif // REDIRECTION_MODE
                 return TRUE;
             }
         }
