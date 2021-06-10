@@ -82,10 +82,16 @@ void update_board(void)
     size_t dest_x = translate_to_board_x(g_dest_coord);
     size_t dest_y = translate_to_board_y(g_dest_coord);
 
-    node_t* moveable_list = get_moveable_list_or_null(s_board, g_src_coord);
-    print_list(moveable_list);
+    piece_t selected_piece = s_board[src_y][src_x];
+    if (get_color(selected_piece) != s_cur_turn) {
+        printf("it's not your turn\n");
+        return;
+    }
 
-    node_t* p = moveable_list;
+    node_t* movable_list = get_movable_list_or_null(s_board, g_src_coord);
+    print_list(movable_list);
+
+    node_t* p = movable_list;
     while (p != NULL) {
         if (p->x == dest_x && p->y == dest_y) {
             move(s_board, src_x, src_y, dest_x, dest_y);
@@ -96,10 +102,10 @@ void update_board(void)
     }
 
     if (p == NULL) {
-        printf("can't move there\n\n");
+        printf("illegal moves\n\n");
     }
 
-    destroy_list(moveable_list);
+    destroy_list(movable_list);
 
     s_cur_turn = (s_cur_turn == COLOR_WHITE) ? COLOR_BLACK : COLOR_WHITE;
 }
@@ -171,8 +177,8 @@ int is_checkmate(void) {
             color_t color = get_color(s_board[y][x]);
             if (color == s_cur_turn) {
                 translate_to_coord(x, y, coord);
-                node_t* moveable_list = get_moveable_list_or_null(s_board, coord);
-                if (moveable_list != NULL) {
+                node_t* movable_list = get_movable_list_or_null(s_board, coord);
+                if (movable_list != NULL) {
                     return FALSE;
                 }
             }
