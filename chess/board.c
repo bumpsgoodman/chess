@@ -9,6 +9,8 @@
 static piece_t s_board[BOARD_HEIGHT][BOARD_WIDTH];
 static color_t s_cur_turn;
 
+static void move(piece_t board[][BOARD_WIDTH], const size_t src_x, const size_t src_y, const size_t dest_x, const size_t dest_y);
+
 void init_board(void)
 {
     const size_t WHITE_KING_Y = 7;
@@ -69,8 +71,6 @@ void init_board(void)
 
     s_cur_turn = COLOR_WHITE;
 }
-
-static void move(piece_t board[][BOARD_WIDTH], const size_t src_x, const size_t src_y, const size_t dest_x, const size_t dest_y);
 
 void update_board(void)
 {

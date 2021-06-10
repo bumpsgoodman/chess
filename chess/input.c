@@ -7,7 +7,7 @@
 #include "input.h"
 #include "validations.h"
 
-#define REDIRECTION_MODE
+// #define REDIRECTION_MODE
 
 char g_src_coord[COORD_LENGTH];
 char g_dest_coord[COORD_LENGTH];
@@ -19,13 +19,13 @@ void input(void)
     printf("from coordinates\n> ");
     if (input_coord(g_src_coord) == FALSE) {
         fprintf(stderr, "failed read data");
-        assert(FALSE && "failed read date");
+        assert(FALSE && "failed read data");
     }
 
     printf("to coordinates\n> ");
     if (input_coord(g_dest_coord) == FALSE) {
         fprintf(stderr, "failed read data");
-        assert(FALSE && "failed read date");
+        assert(FALSE && "failed read data");
     }
 }
 
